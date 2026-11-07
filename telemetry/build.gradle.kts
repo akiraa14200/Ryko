@@ -1,5 +1,3 @@
-import mihon.gradle.Config
-
 plugins {
     alias(mihonx.plugins.android.library)
     alias(mihonx.plugins.spotless)
@@ -10,22 +8,11 @@ android {
 
     sourceSets {
         getByName("main") {
-            if (Config.includeTelemetry) {
-                kotlin.directories.add("src/firebase/kotlin")
-            } else {
-                kotlin.directories.add("src/noop/kotlin")
-                manifest.srcFile("src/noop/AndroidManifext.xml")
-            }
+            kotlin.directories.add("src/noop/kotlin")
         }
     }
 }
 
 dependencies {
     implementation(projects.core.common)
-
-    if (Config.includeTelemetry) {
-        implementation(platform(libs.firebase.bom))
-        implementation(libs.firebase.analytics)
-        implementation(libs.firebase.crashlytics)
-    }
 }

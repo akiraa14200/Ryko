@@ -1,6 +1,5 @@
 import com.android.build.api.variant.ApplicationVariant
 import com.android.build.api.variant.BuildConfigField
-import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 import mihon.gradle.Config
 import mihon.gradle.getCurrentTime
 import mihon.gradle.getLatestCommitCount
@@ -22,20 +21,13 @@ plugins {
     alias(libs.plugins.apollo)
 }
 
-if (Config.includeTelemetry) {
-    pluginManager.apply {
-        apply(libs.plugins.google.services.get().pluginId)
-        apply(libs.plugins.firebase.crashlytics.get().pluginId)
-    }
-}
-
 val keystorePropertiesFile = layout.settingsDirectory.file("keystore.properties").asFile
 
 android {
     namespace = "eu.kanade.tachiyomi"
 
     defaultConfig {
-        applicationId = "app.mihon"
+        applicationId = "com.rykoreader.app"
 
         versionCode = 39
         versionName = "0.21.3"
@@ -107,14 +99,6 @@ android {
             applicationIdSuffix = ".benchmark"
 
             matchingFallbacks.addAll(commonMatchingFallbacks)
-        }
-
-        if (Config.includeTelemetry) {
-            configureEach {
-                configure<CrashlyticsExtension> {
-                    mappingFileUploadEnabled = Config.uploadCrashlyticsMapping
-                }
-            }
         }
     }
 
@@ -360,7 +344,7 @@ apollo {
             // Kitsu doesn't like requests without a UA
             headers.put(
                 "User-Agent",
-                "Mihon v${android.defaultConfig.versionName} (${android.defaultConfig.applicationId})",
+                "Ryko v${android.defaultConfig.versionName} (${android.defaultConfig.applicationId})",
             )
             endpointUrl.set("https://kitsu.app/api/graphql")
             schemaFile.set(file("$srcDir/kitsu.graphqls"))
