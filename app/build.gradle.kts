@@ -100,7 +100,6 @@ android {
 
             matchingFallbacks.addAll(commonMatchingFallbacks)
         }
-
     }
 
     sourceSets {
