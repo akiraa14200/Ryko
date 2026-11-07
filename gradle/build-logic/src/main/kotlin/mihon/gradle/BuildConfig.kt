@@ -24,10 +24,10 @@ val Project.Config: BuildConfig get() = object : BuildConfig {
         }
         ?: Distribution.LOCAL
 
-    override val includeTelemetry: Boolean = project.flag("include-telemetry")
-        ?: (distribution == Distribution.CI || distribution == Distribution.GITHUB)
+    // Ryko does not collect Firebase analytics or crash reports.
+    override val includeTelemetry: Boolean = false
 
-    override val uploadCrashlyticsMapping: Boolean = includeTelemetry && (distribution == Distribution.GITHUB)
+    override val uploadCrashlyticsMapping: Boolean = false
 
     override val enableUpdater: Boolean = project.flag("enable-updater")
         ?: (distribution != Distribution.LOCAL)
